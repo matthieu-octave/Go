@@ -30,7 +30,7 @@ func printIndex[T comparable](x []T, y T) error {
 	if Index(x, y) == -1 {
 		str := fmt.Sprintf("%v", y)
 		fmt.Printf("Erreur : %q n'exite pas dans le tableau", str)
-		return strError(fmt.Sprint(-1))
+		return strError("-1")
 	}
 	fmt.Println("Index :", Index(x, y), "->", "Valeur :", x[Index(x, y)])
 	return nil
@@ -43,6 +43,10 @@ func main() {
 	var err error
 	var x []T = make([]T, 0)
 	var y T
+
+	// faire 2 tableaux, 1 de int et 1 de strings
+	// en fonction de la saisie, remplir l'un ou l'autre
+
 	// var a T
 	// var b T
 
@@ -75,10 +79,14 @@ func main() {
 
 		switch arg {
 		case "-h", "--help":
-			fmt.Println("Usage: ", progName, " <{int || string, int || string...}> <int>")
+			fmt.Println("Usage: ", progName, " -i <int> <int> [int...]")
+			fmt.Println("OU")
+			fmt.Println("Usage: ", progName, " -s <int> <string> [string...]")
 			os.Exit(1)
 		default:
 			// convertir arg(string) en tableau x
+
+			// a revoir faire 2 cases "-i" et "-s"
 			fields := strings.Fields(arg)
 			x = make([]T, len(fields))
 			for i, field := range fields {
@@ -91,14 +99,16 @@ func main() {
 			//
 			isNumberSet = true
 			if err != nil {
-				fmt.Println("Usage: ", progName, " <{int || string, int || string...}> <int>")
+				fmt.Println("Usage: ", progName, " <int> <int> [int...]")
+				fmt.Println("OU")
+				fmt.Println("Usage: ", progName, " <int> <string> [string...]")
 				panic(err)
 			}
 		}
 	}
 
 	if isNumberSet == false {
-		fmt.Println("Veuillez entrer un nombre !")
+		fmt.Println("Veuillez entrer une valeur à rechercher !")
 		os.Exit(1)
 	}
 
